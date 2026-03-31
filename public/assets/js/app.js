@@ -1,4 +1,10 @@
-import { db, collection, getDocs } from "./firebase-init.js";
+import {
+  db,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "./firebase-init.js";
 import { createBrazilMap, addMarkersToMap, fitBrazilBounds } from "./map.js";
 import { showToast, unlockTelegramButtons, sanitizeInput } from "./ui.js";
 
@@ -6,7 +12,8 @@ const form = document.getElementById("entryForm");
 const map = createBrazilMap("map");
 
 async function loadSubmissoes() {
-  const snapshot = await getDocs(collection(db, "submissoes"));
+  const q = query(collection(db, "submissoes"), where("status", "==", "aprovado"));
+  const snapshot = await getDocs(q);
   const items = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
   addMarkersToMap(map, items);
