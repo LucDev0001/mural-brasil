@@ -109,3 +109,26 @@ export function createEmptyState(
     </div>
   `;
 }
+
+export function createSubmissionCard(doc) {
+  const data = doc.data();
+  const id = doc.id;
+
+  return `
+    <div class="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur">
+      <div class="flex items-center justify-between gap-4">
+        <h2 class="text-xl font-bold">${data.titulo}</h2>
+        <span class="text-xs text-slate-400">${new Date(data.createdAt?.toDate()).toLocaleDateString() || ""}</span>
+      </div>
+      <p class="text-sm text-slate-400">${data.cidade} - ${data.estado}</p>
+      <p class="mt-4 text-slate-200 leading-7">${data.mensagem}</p>
+      <div class="mt-6 flex items-center justify-between">
+        <p class="text-xs text-slate-500">Enviado por ${data.nome || "Anônimo"}</p>
+        <div class="flex gap-3">
+          <button data-id="${id}" class="approve-btn rounded-lg bg-emerald-500 px-4 py-2 font-bold text-slate-950 transition-colors hover:bg-emerald-600">Aprovar</button>
+          <button data-id="${id}" class="reject-btn rounded-lg bg-red-500 px-4 py-2 font-bold text-white transition-colors hover:bg-red-600">Rejeitar</button>
+        </div>
+      </div>
+    </div>
+  `;
+}

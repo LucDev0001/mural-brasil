@@ -66,12 +66,23 @@ reportForm?.addEventListener("submit", async (e) => {
     return;
   }
 
+  const telegramModal = document.getElementById("telegramModal");
+  const closeModalBtn = document.getElementById("closeModalBtn");
+
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener("click", () => {
+      telegramModal.classList.add("hidden");
+      window.location.href = "./index.html";
+    });
+  }
+
   try {
     setButtonLoading(submitBtn, true, "Localizando cidade...");
 
     const geo = await geocodeBrazilCity(cidade, estado);
 
     if (!geo) {
+      setButtonLoading(submitBtn, false);
       feedback.textContent =
         "Não foi possível localizar essa cidade no mapa. Verifique cidade e UF.";
       showToast("Não foi possível localizar essa cidade no mapa.", "error");
@@ -92,7 +103,7 @@ reportForm?.addEventListener("submit", async (e) => {
       lng: geo.lng,
       municipio: geo.municipio,
       estadoNome: geo.estadoNome,
-      status: "publicado",
+      status: "pendente", // Alterado para 'pendente' para o sistema de aprovação
       socialLinks: {
         telegram: "https://t.me/ograndedia",
         instagram:
@@ -104,23 +115,14 @@ reportForm?.addEventListener("submit", async (e) => {
     });
 
     sessionStorage.setItem("telegram_unlocked", "true");
-    unlockTelegramButtons();
-
-    if (telegramBtn) {
-      telegramBtn.href = "https://t.me/ograndedia";
-      telegramBtn.textContent = "Entrar no Telegram";
-      telegramBtn.classList.remove("opacity-50", "pointer-events-none");
-    }
-
-    feedback.textContent =
-      "Contribuição publicada com sucesso. O botão do Telegram foi liberado.";
-    showToast("Contribuição publicada com sucesso.", "success");
-
+    unlockTelegramButtons(); // Mantém para desbloquear o botão em outras páginas
     reportForm.reset();
 
-    setTimeout(() => {
-      window.location.href = "./index.html";
-    }, 1800);
+    // Exibe o modal
+    if (telegramModal) {
+      telegramModal.classList.remove("hidden");
+    }
+    
   } catch (error) {
     console.error(error);
     feedback.textContent =

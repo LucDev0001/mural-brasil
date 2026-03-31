@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+  </head>
+  <body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center">
+    <main class="max-w-md w-full mx-auto px-4 py-10">
+      <div
+        class="rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8 backdrop-blur"
+      >
+        <h1 class="text-3xl font-black text-center">
+          Login de Administrador
+        </h1>
+
+        <form id="loginForm" class="mt-8 space-y-4">
+          <input
+            id="email"
+            type="email"
+            placeholder="Seu e-mail"
+            required
+            class="w-full rounded-2xl bg-slate-900 border border-white/10 px-4 py-3"
+          />
+          <input
+            id="password"
+            type="password"
+            placeholder="Sua senha"
+            required
+            class="w-full rounded-2xl bg-slate-900 border border-white/10 px-4 py-3"
+          />
+          <button
+            type="submit"
+            class="w-full rounded-2xl bg-emerald-500 px-4 py-3 font-bold text-slate-950"
+          >
+            Entrar
+          </button>
+        </form>
+
+        <p id="feedback" class="mt-4 text-sm text-center text-red-400"></p>
+      </div>
+    </main>
+
+    <script type="module" src="./assets/js/login.js"></script>
+  </body>
+</html>

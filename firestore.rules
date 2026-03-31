@@ -1,0 +1,36 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper function to check for admin role
+    function isAdmin() {
+      // Assumes you have a collection named 'admins' where each document's ID
+      // is a user's UID and contains a 'role: admin' field.
+      return get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Rules for the 'submissoes' collection
+    match /submissoes/{submissionId} {
+      // Anyone can read documents that are approved.
+      allow read: if resource.data.status == 'aprovado';
+
+      // Anyone can create a new submission, but it must be 'pendente' and match the incoming data schema.
+      allow create: if request.resource.data.status == 'pendente'
+                    && request.resource.data.keys().hasAll(['nome', 'cidade', 'estado', 'titulo', 'categoria', 'mensagem', 'lat', 'lng', 'municipio', 'estadoNome', 'status', 'createdAt', 'socialLinks', 'telegramLiberado'])
+                    && request.resource.data.nome is string
+                    && request.resource.data.cidade is string;
+
+
+      // Only admins can update (to approve) or delete (to reject) submissions.
+      allow update, delete: if isAdmin();
+    }
+
+    // Rules for the 'admins' collection.
+    match /admins/{userId} {
+      // Only admins can read or write to the admins collection. 
+      // This prevents non-admins from giving themselves admin privileges.
+      allow read, write: if isAdmin();
+    }
+  }
+}

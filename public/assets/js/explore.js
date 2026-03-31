@@ -1,4 +1,4 @@
-import { db, collection, getDocs } from "./firebase-init.js";
+import { db, collection, getDocs, query, where } from "./firebase-init.js";
 import { createEmptyState, formatCategory, sanitizeInput } from "./ui.js";
 
 const cards = document.getElementById("cards");
@@ -53,7 +53,8 @@ function applyFilters() {
 }
 
 async function init() {
-  const snapshot = await getDocs(collection(db, "submissoes"));
+  const q = query(collection(db, "submissoes"), where("status", "==", "aprovado"));
+  const snapshot = await getDocs(q);
   items = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   render(items);
 }
