@@ -13,6 +13,7 @@ const reportForm = document.getElementById("reportForm");
 const feedback = document.getElementById("feedback");
 const telegramBtn = document.getElementById("telegramBtn");
 const submitBtn = reportForm?.querySelector('button[type="submit"]');
+const telegramModal = document.getElementById("telegramModal");
 
 const savedUser = JSON.parse(sessionStorage.getItem("mural_user") || "{}");
 
@@ -21,6 +22,14 @@ if (savedUser.cidade)
   document.getElementById("cidade").value = savedUser.cidade;
 
 unlockTelegramButtons();
+
+// Configura o modal para fechar, fora do listener de submit
+const closeModalBtn = document.getElementById("closeModalBtn");
+if (closeModalBtn) {
+  closeModalBtn.addEventListener("click", () => {
+    telegramModal.classList.add("hidden");
+  });
+}
 
 reportForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -66,16 +75,6 @@ reportForm?.addEventListener("submit", async (e) => {
     return;
   }
 
-  const telegramModal = document.getElementById("telegramModal");
-  const closeModalBtn = document.getElementById("closeModalBtn");
-
-  if (closeModalBtn) {
-    closeModalBtn.addEventListener("click", () => {
-      telegramModal.classList.add("hidden");
-      window.location.href = "./index.html";
-    });
-  }
-
   try {
     setButtonLoading(submitBtn, true, "Localizando cidade...");
 
@@ -103,14 +102,7 @@ reportForm?.addEventListener("submit", async (e) => {
       lng: geo.lng,
       municipio: geo.municipio,
       estadoNome: geo.estadoNome,
-      status: "pendente", // Alterado para 'pendente' para o sistema de aprovação
-      socialLinks: {
-        telegram: "https://t.me/ograndedia",
-        instagram:
-          "https://instagram.com/geracaozbr.oficial?igsh=Y28wdHczeHV5cDVn",
-        portal: "https://hyperzcommunity.com/transparency/index.php",
-        comunidade: "https://hyperzcommunity.com",
-      },
+      status: "pendente",
       createdAt: serverTimestamp(),
     });
 
@@ -122,7 +114,6 @@ reportForm?.addEventListener("submit", async (e) => {
     if (telegramModal) {
       telegramModal.classList.remove("hidden");
     }
-    
   } catch (error) {
     console.error(error);
     feedback.textContent =

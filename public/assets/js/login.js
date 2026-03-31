@@ -24,11 +24,15 @@ loginForm?.addEventListener("submit", async (e) => {
     window.location.href = "./admin.html";
   } catch (error) {
     console.error("Erro de autenticação:", error);
-    feedback.textContent = "Falha no login. Verifique suas credenciais.";
-    if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
-        feedback.textContent = "E-mail ou senha inválidos.";
+    let errorMessage = "Falha no login. Verifique suas credenciais.";
+    if (
+      error.code === "auth/user-not-found" ||
+      error.code === "auth/wrong-password"
+    ) {
+      errorMessage = "E-mail ou senha inválidos.";
     }
-    showToast(feedback.textContent, "error");
+    feedback.textContent = errorMessage;
+    showToast(errorMessage, "error");
   } finally {
     setButtonLoading(submitBtn, false);
   }
