@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enviar contribuição</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+  </head>
+  <body class="bg-slate-950 text-slate-100 min-h-screen">
+    <main class="max-w-3xl mx-auto px-4 py-10">
+      <div
+        class="rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8 backdrop-blur"
+      >
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <p class="text-emerald-300 text-sm">Envio público</p>
+            <h1 class="text-3xl font-black">
+              Conte o que acontece na sua cidade
+            </h1>
+          </div>
+          <a
+            id="telegramBtn"
+            href="#"
+            class="rounded-full border border-white/10 px-4 py-2 opacity-50 pointer-events-none"
+            >Telegram bloqueado</a
+          >
+        </div>
+
+        <form id="reportForm" class="mt-8 space-y-4">
+          <div class="grid md:grid-cols-2 gap-4">
+            <input
+              id="nome"
+              type="text"
+              placeholder="Seu nome"
+              class="w-full rounded-2xl bg-slate-900 border border-white/10 px-4 py-3"
+            />
+            <input
+              id="cidade"
+              type="text"
+              placeholder="Cidade"
+              class="w-full rounded-2xl bg-slate-900 border border-white/10 px-4 py-3"
+            />
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <input
+              id="estado"
+              type="text"
+              placeholder="Estado (UF)"
+              maxlength="2"
+              class="w-full rounded-2xl bg-slate-900 border border-white/10 px-4 py-3 uppercase"
+            />
+            <select
+              id="categoria"
+              class="w-full rounded-2xl bg-slate-900 border border-white/10 px-4 py-3"
+            >
+              <option value="relato">Relato</option>
+              <option value="testemunho">Testemunho</option>
+              <option value="indignacao">Indignação</option>
+              <option value="denuncia_cidada">Denúncia cidadã</option>
+            </select>
+          </div>
+
+          <input
+            id="titulo"
+            type="text"
+            placeholder="Título do relato"
+            class="w-full rounded-2xl bg-slate-900 border border-white/10 px-4 py-3"
+          />
+
+          <textarea
+            id="mensagem"
+            rows="7"
+            placeholder="Descreva o que você quer registrar publicamente..."
+            class="w-full rounded-2xl bg-slate-900 border border-white/10 px-4 py-3"
+          ></textarea>
+
+          <label
+            class="flex items-start gap-3 rounded-2xl border border-white/10 bg-slate-900/60 p-4 text-sm"
+          >
+            <input id="publico" type="checkbox" class="mt-1" />
+            <span
+              >Estou ciente de que esse conteúdo poderá aparecer publicamente no
+              mapa e na listagem.</span
+            >
+          </label>
+
+          <button
+            type="submit"
+            class="w-full rounded-2xl bg-emerald-500 px-4 py-3 font-bold text-slate-950"
+          >
+            Publicar contribuição
+          </button>
+        </form>
+
+        <p id="feedback" class="mt-4 text-sm text-slate-300"></p>
+      </div>
+    </main>
+
+    <script type="module" src="./assets/js/form.js"></script>
+  </body>
+</html>

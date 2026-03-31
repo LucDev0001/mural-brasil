@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Explorar relatos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+  </head>
+  <body class="bg-slate-950 text-slate-100 min-h-screen">
+    <main class="max-w-7xl mx-auto px-4 py-8">
+      <div
+        class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8"
+      >
+        <div>
+          <p class="text-emerald-300 text-sm">Mural público</p>
+          <h1 class="text-3xl font-black">Contribuições por cidade</h1>
+        </div>
+        <a
+          href="./index.html"
+          class="rounded-full border border-white/10 px-4 py-2"
+          >Voltar ao mapa</a
+        >
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4 mb-6">
+        <input
+          id="filterCidade"
+          type="text"
+          placeholder="Filtrar por cidade"
+          class="rounded-2xl bg-slate-900 border border-white/10 px-4 py-3"
+        />
+        <input
+          id="filterEstado"
+          type="text"
+          placeholder="UF"
+          maxlength="2"
+          class="rounded-2xl bg-slate-900 border border-white/10 px-4 py-3 uppercase"
+        />
+        <select
+          id="filterCategoria"
+          class="rounded-2xl bg-slate-900 border border-white/10 px-4 py-3"
+        >
+          <option value="">Todas as categorias</option>
+          <option value="relato">Relato</option>
+          <option value="testemunho">Testemunho</option>
+          <option value="indignacao">Indignação</option>
+          <option value="denuncia_cidada">Denúncia cidadã</option>
+        </select>
+      </div>
+
+      <section id="cards" class="grid lg:grid-cols-2 gap-4"></section>
+    </main>
+
+    <script type="module" src="./assets/js/explore.js"></script>
+  </body>
+</html>
