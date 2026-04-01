@@ -72,6 +72,14 @@ async function loadPendingSubmissions() {
     });
   } catch (error) {
     console.error("Erro ao carregar submissões:", error);
+
+    if (error.code === "permission-denied") {
+      pendingSubmissionsContainer.innerHTML =
+        '<p class="text-center text-red-500 font-bold">Acesso Negado.<br>Seu usuário não possui um documento de Admin no Firestore!</p>';
+      showToast("Sem permissão de administrador.", "error");
+      return;
+    }
+
     pendingSubmissionsContainer.innerHTML =
       '<p class="text-center text-red-500">Erro ao carregar submissões.</p>';
     showToast("Erro ao carregar submissões.", "error");

@@ -28,6 +28,7 @@ const closeModalBtn = document.getElementById("closeModalBtn");
 if (closeModalBtn) {
   closeModalBtn.addEventListener("click", () => {
     telegramModal.classList.add("hidden");
+    window.location.href = "./index.html";
   });
 }
 
@@ -116,6 +117,15 @@ reportForm?.addEventListener("submit", async (e) => {
     }
   } catch (error) {
     console.error(error);
+
+    // Mensagem amigável caso a regra do Firebase bloqueie o envio
+    if (error.code === "permission-denied") {
+      feedback.textContent =
+        "Erro de permissão: Regras do Firebase bloquearam o envio.";
+      showToast("Regras do banco de dados bloquearam o envio.", "error");
+      return;
+    }
+
     feedback.textContent =
       "Erro ao publicar. Verifique sua configuração do Firebase.";
     showToast(
