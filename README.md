@@ -37,13 +37,23 @@ Um exemplo de regra para este projeto, que permite que qualquer um crie (`create
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null &&
+             get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'admin';
+    }
+
     match /submissoes/{docId} {
-      // Qualquer pessoa pode criar uma submissão
-      allow create: if true;
-      // Qualquer pessoa pode ler SE o status for 'aprovado'. Admins podem ler tudo.
-      allow read: if resource.data.status == 'aprovado' || request.auth != null;
-      // Apenas Admins (usuários logados) podem atualizar ou deletar
-      allow update, delete: if request.auth != null;
+      allow read: if resource.data.status == 'aprovado' || isAdmin();
+
+      allow create: if request.resource.data.status == 'pendente'
+                    && request.resource.data.keys().hasAll(['nome', 'cidade', 'estado', 'titulo', 'categoria', 'mensagem', 'lat', 'lng', 'municipio', 'estadoNome', 'status', 'createdAt', 'telegramLiberado']);
+
+      allow update, delete: if isAdmin();
+    }
+
+    match /admins/{userId} {
+      allow read, write: if isAdmin();
     }
   }
 }
