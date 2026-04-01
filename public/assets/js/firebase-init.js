@@ -9,6 +9,9 @@ import {
   orderBy,
   serverTimestamp,
   limit,
+  doc,
+  updateDoc,
+  deleteDoc,
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 import {
   getAuth,
@@ -44,4 +47,7 @@ export {
   orderBy,
   serverTimestamp,
   limit,
+  doc,
+  updateDoc,
+  deleteDoc,
 };
