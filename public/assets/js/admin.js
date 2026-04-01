@@ -19,7 +19,7 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    loadPendingSubmissions();
+    loadPendingSubmissions(user);
   } else {
     window.location.href = "./login.html";
   }
@@ -35,7 +35,7 @@ logoutBtn?.addEventListener("click", async () => {
   }
 });
 
-async function loadPendingSubmissions() {
+async function loadPendingSubmissions(user) {
   if (!pendingSubmissionsContainer) return;
   pendingSubmissionsContainer.innerHTML =
     '<p class="text-center">Carregando submissões pendentes...</p>';
@@ -74,8 +74,8 @@ async function loadPendingSubmissions() {
     console.error("Erro ao carregar submissões:", error);
 
     if (error.code === "permission-denied") {
-      pendingSubmissionsContainer.innerHTML =
-        '<p class="text-center text-red-500 font-bold">Acesso Negado.<br>Seu usuário não possui um documento de Admin no Firestore!</p>';
+      pendingSubmissionsContainer.innerHTML = `<p class="text-center text-red-500 font-bold text-lg mb-2">Acesso Negado.</p>
+         <p class="text-center text-slate-300">O sistema bloqueou a leitura porque seu usuário (UID: <code class="bg-slate-800 text-emerald-400 px-2 py-1 rounded select-all">${user?.uid}</code>) não foi reconhecido como admin.</p><br><p class="text-center text-sm text-slate-400">Vá no Firestore, na coleção <b>admins</b>, crie um documento com esse código exato acima no ID e adicione o campo <b>role: "admin"</b>.</p>`;
       showToast("Sem permissão de administrador.", "error");
       return;
     }
