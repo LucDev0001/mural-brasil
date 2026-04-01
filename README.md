@@ -38,8 +38,12 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /submissoes/{docId} {
-      allow read, update: if request.auth != null;
+      // Qualquer pessoa pode criar uma submissão
       allow create: if true;
+      // Qualquer pessoa pode ler SE o status for 'aprovado'. Admins podem ler tudo.
+      allow read: if resource.data.status == 'aprovado' || request.auth != null;
+      // Apenas Admins (usuários logados) podem atualizar ou deletar
+      allow update, delete: if request.auth != null;
     }
   }
 }
