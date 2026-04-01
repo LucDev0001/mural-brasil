@@ -81,6 +81,12 @@ reportForm?.addEventListener("submit", async (e) => {
 
     const geo = await geocodeBrazilCity(cidade, estado);
 
+    console.log("Tentativa de geolocalização:", {
+      cidade,
+      estado,
+      resultado: geo,
+    });
+
     if (!geo) {
       setButtonLoading(submitBtn, false);
       feedback.textContent =
