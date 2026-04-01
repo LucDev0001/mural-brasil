@@ -47,9 +47,14 @@ service cloud.firestore {
       allow read: if resource.data.status == 'aprovado' || isAdmin();
 
       allow create: if request.resource.data.status == 'pendente'
-                    && request.resource.data.keys().hasAll(['nome', 'cidade', 'estado', 'titulo', 'categoria', 'mensagem', 'lat', 'lng', 'municipio', 'estadoNome', 'status', 'createdAt', 'telegramLiberado']);
+                    && request.resource.data.keys().hasAll(['nome', 'cidade', 'estado', 'titulo', 'categoria', 'mensagem', 'lat', 'lng', 'municipio', 'estadoNome', 'status', 'createdAt', 'telegramLiberado', 'votos'])
+                    && request.resource.data.votos == 0;
 
-      allow update, delete: if isAdmin();
+      // Admins podem tudo. Usuários comuns só podem atualizar se estiverem alterando APENAS o campo 'votos' em exatos +1.
+      allow update: if isAdmin() ||
+                    (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['votos']) &&
+                     request.resource.data.votos == (('votos' in resource.data) ? resource.data.votos : 0) + 1);
+      allow delete: if isAdmin();
     }
 
     match /admins/{userId} {

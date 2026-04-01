@@ -20,6 +20,8 @@ const savedUser = JSON.parse(sessionStorage.getItem("mural_user") || "{}");
 if (savedUser.nome) document.getElementById("nome").value = savedUser.nome;
 if (savedUser.cidade)
   document.getElementById("cidade").value = savedUser.cidade;
+if (savedUser.estado)
+  document.getElementById("estado").value = savedUser.estado;
 
 unlockTelegramButtons();
 
@@ -110,6 +112,7 @@ reportForm?.addEventListener("submit", async (e) => {
       municipio: geo.municipio,
       estadoNome: geo.estadoNome,
       status: "pendente",
+      votos: 0,
       createdAt: serverTimestamp(),
     });
 

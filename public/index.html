@@ -9,6 +9,14 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"
+    />
     <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body class="bg-slate-950 text-slate-100 min-h-screen overflow-x-hidden">
@@ -67,7 +75,25 @@
                 />
               </div>
               <div>
-                <label class="block text-sm mb-2">Sua cidade</label>
+                <div class="mb-2 flex items-center justify-between">
+                  <label class="block text-sm">Sua cidade</label>
+                  <button
+                    type="button"
+                    id="btnLocation"
+                    class="flex items-center gap-1 text-xs text-emerald-400 transition-colors hover:text-emerald-300"
+                  >
+                    <svg
+                      class="h-3 w-3"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                      />
+                    </svg>
+                    Usar localização
+                  </button>
+                </div>
                 <input
                   id="cidade"
                   type="text"
@@ -154,6 +180,7 @@
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script type="module" src="./assets/js/app.js"></script>
   </body>
 </html>

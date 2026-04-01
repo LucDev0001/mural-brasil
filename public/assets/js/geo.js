@@ -53,6 +53,8 @@ export async function geocodeBrazilCity(cidade, uf) {
 
   const response = await fetch(url, {
     headers: {
+      // A política de uso da API Nominatim recomenda um User-Agent customizado
+      "User-Agent": "MuralBrasil/1.0 (lucdev0001@github)",
       Accept: "application/json",
     },
   });
@@ -76,4 +78,46 @@ export async function geocodeBrazilCity(cidade, uf) {
 
   sessionStorage.setItem(cacheKey, JSON.stringify(result));
   return result;
+}
+
+export async function reverseGeocode(lat, lng) {
+  const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`;
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "MuralBrasil/1.0 (lucdev0001@github)",
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    if (!data || !data.address) return null;
+
+    const address = data.address;
+    // O Nominatim pode retornar o nome da cidade em diferentes propriedades
+    const cidade =
+      address.city ||
+      address.town ||
+      address.village ||
+      address.municipality ||
+      "";
+    const estadoNome = address.state || "";
+
+    // Busca a sigla UF (ex: SP) através do nome do estado
+    let uf = "";
+    for (const [key, value] of Object.entries(UF_NAMES)) {
+      if (value.toLowerCase() === estadoNome.toLowerCase()) {
+        uf = key;
+        break;
+      }
+    }
+
+    return { cidade, estado: uf, estadoNome };
+  } catch (error) {
+    console.error("Erro no geocoding reverso:", error);
+    return null;
+  }
 }

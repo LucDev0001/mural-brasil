@@ -21,6 +21,8 @@ export function fitBrazilBounds(map) {
 }
 
 export function addMarkersToMap(map, items) {
+  const markers = L.markerClusterGroup();
+
   const validItems = items.filter(
     (item) => Number.isFinite(item.lat) && Number.isFinite(item.lng),
   );
@@ -34,20 +36,27 @@ export function addMarkersToMap(map, items) {
           ${escapeHtml((item.mensagem || "").slice(0, 140))}
           ${(item.mensagem || "").length > 140 ? "..." : ""}
         </p>
+        <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
+          <span class="text-xs text-slate-500 vote-count-${item.id}">${item.votos || 0} concordam</span>
+          <button data-vote-id="${item.id}" class="vote-btn rounded bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-600 transition hover:bg-emerald-500/30">Concordar</button>
+        </div>
       </div>
     `;
 
-    L.circleMarker([item.lat, item.lng], {
+    const marker = L.circleMarker([item.lat, item.lng], {
       radius: 8,
       weight: 2,
       opacity: 1,
       fillOpacity: 0.85,
       color: "#86efac",
       fillColor: "#22c55e",
-    })
-      .addTo(map)
-      .bindPopup(popup);
+    });
+
+    marker.bindPopup(popup);
+    markers.addLayer(marker);
   });
+
+  map.addLayer(markers);
 }
 
 function escapeHtml(text = "") {
